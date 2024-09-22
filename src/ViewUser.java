@@ -1,6 +1,6 @@
 
 import javax.swing.JOptionPane;
-Import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 
 /*
@@ -104,8 +104,8 @@ public class ViewUser extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
         try{
-            Connection con = ConnectionProvider.getCon();
-            Statement st con.creatStatement();
+            Connection con=dao.ConnectionProvider.main();
+            Statement st=con.createStatement();
             ResultSet rs = st.executeQuery("select *from appuser");
             while(rs.next()){
                 model.addRow(new Object[]{rs.getString("appuser_pk"),{rs.getString("name"),{rs.getString("userRole"),{rs.getString("dob"),{rs.getString("mobileNumber"),{rs.getString("username"),{rs.getString("password"),{rs.getString("address")})
@@ -123,12 +123,12 @@ public class ViewUser extends javax.swing.JFrame {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
-        int index = jTable.getSelectedRow();
-        TableModel model = jTable .getModel();
+        int index = jTable1.getSelectedRow();
+        TableModel model = jTable1 .getModel();
         String id = model.getValueAt(index, 0).toString();
         String UsernameTable = model.getValueAt(index, 6).toString();
         if(username.equals(usernameTable)){
-            JOptionPane.showMessageDialog(nill, "You can't delete your own account");
+            JOptionPane.showMessageDialog(null, "You can't delete your own account");
         }
         else{
             int a = JOptionPane.showMessageDialog(null," Do you want to delete this user","Select",JOptionPane.YES_NO_OPTION);
