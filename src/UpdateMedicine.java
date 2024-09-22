@@ -5,7 +5,7 @@
 import java.sql.*;
 import javax.swing.*;
 import java.awt.Color;
-import Project.ConnectionProvider.*;
+import dao.ConnectionProvider.*;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
@@ -173,7 +173,7 @@ public class UpdateMedicine extends javax.swing.JFrame {
         }
         else{
             try{
-            Connection con=Project.ConnectionProvider.main();
+            Connection con=dao.ConnectionProvider.main();
             Statement st=con.createStatement();
             ResultSet rs=st.executeQuery("select *from medicine where uniqueId like '"+uniqueId+"%'");
             while(rs.next()){
@@ -227,15 +227,16 @@ public class UpdateMedicine extends javax.swing.JFrame {
         }else if(!price.matches(numberPattern)){
         JOptionPane.showMessageDialog(null, "Price Per Unit Field is invalid.");
         }else{
-        try(
-              Connection con=Project.ConnectionProvider.main();
+        try {
+            Connection con=dao.ConnectionProvider.main();
             Statement st=con.createStatement();
             ResultSet rs=st.executeQuery("select *from medicine where uniqueId like '"+uniqueId+"%'");
             while(rs.next()){  
-                )
+            }
         catch(Exception e) { 
                 JOptionPane.showMessageDialog(null, e); 
         } 
+        }
     }          
     }//GEN-LAST:event_jButton3ActionPerformed
 
