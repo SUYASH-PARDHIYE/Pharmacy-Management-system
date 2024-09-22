@@ -5,7 +5,7 @@
 import java.sql.*;
 import javax.swing.*;
 import java.awt.Color;
-import Project.ConnectionProvider.*;
+import dao.ConnectionProvider.*;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
@@ -110,7 +110,7 @@ public class ViewBill extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         try{
-        Connection con=Project.ConnectionProvider.main();
+        Connection con=dao.ConnectionProvider.main();
             Statement st=con.createStatement();
             ResultSet rs=st.executeQuery("select *from bill");
             while(rs.next()){

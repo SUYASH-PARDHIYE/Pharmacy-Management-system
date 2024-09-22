@@ -5,7 +5,7 @@
 import java.sql.*;
 import javax.swing.*;
 import java.awt.Color;
-import Project.ConnectionProvider.*;
+import dao.ConnectionProvider.*;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
@@ -20,10 +20,14 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import common.OpenPdf;
 import java.io.FileOutputStream;
 import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
+import dao.PharmacyUtils;
+
 
 /**
  *
@@ -49,7 +53,7 @@ public class SellMedicine extends javax.swing.JFrame {
     private void medicineName(String nameorUniqueId){
     DefaultTableModel model = (DefaultTableModel) medicinesTable.getModel();
     try{
-    Connection con=Project.ConnectionProvider.main();
+    Connection con=dao.ConnectionProvider.main();
             Statement st=con.createStatement();
              ResultSet rs=st.executeQuery("select *from medicine where name like = '"+nameOrUniqueId + "%'");
              while (rs.next()){
@@ -106,7 +110,7 @@ public class SellMedicine extends javax.swing.JFrame {
         cartTable = new javax.swing.JTable();
         btnAddtocart = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        lblFinalTotalPrice = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
 
@@ -231,6 +235,11 @@ public class SellMedicine extends javax.swing.JFrame {
                 "Medicine Id", "Name", "Company Name", "Price Per Unit ", "No of Unit", "Total Price "
             }
         ));
+        cartTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cartTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(cartTable);
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(536, 362, 758, 212));
@@ -250,14 +259,19 @@ public class SellMedicine extends javax.swing.JFrame {
         jLabel9.setText("Rs:");
         getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(619, 628, -1, -1));
 
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("00");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(671, 628, -1, -1));
+        lblFinalTotalPrice.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblFinalTotalPrice.setForeground(new java.awt.Color(255, 255, 255));
+        lblFinalTotalPrice.setText("00");
+        getContentPane().add(lblFinalTotalPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(671, 628, -1, -1));
 
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/generate bill & print.png"))); // NOI18N
         jButton3.setText("Purchase And Print");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1126, 636, -1, -1));
 
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
@@ -301,7 +315,7 @@ public class SellMedicine extends javax.swing.JFrame {
         
         String uniqueId [] = nameorUniqueId.split("-",0);
         try {
-            Connection con=Project.ConnectionProvider.main();
+            Connection con=dao.ConnectionProvider.main();
             Statement st=con.createStatement();
              ResultSet rs=st.executeQuery("select *from medicine where uniqueId like = '"+uniqueId + "");
              while (rs.next()){
@@ -351,7 +365,7 @@ public class SellMedicine extends javax.swing.JFrame {
              int checkMedicineAlreadyExistInCart = 0;
              
              try {
-            Connection con=Project.ConnectionProvider.main();
+            Connection con=dao.ConnectionProvider.main();
             Statement st=con.createStatement();
              ResultSet rs=st.executeQuery("select *from medicine where uniqueId like = '"+uniqueId + "");
              while (rs.next()){
@@ -378,11 +392,111 @@ public class SellMedicine extends javax.swing.JFrame {
          }
          if(checkMedicineAlreadyExistInCart == 0){
          dtm.addRow(new Object[] {uniqueId,name,companyName,});
-         
+         finalTotalPrice = finalTotalPrice + Integer.parseInt(totalPrice);
+         lblFinalTotalPrice.setText(String.valueOf(finalTotalPrice));
+         JOptionPane.showMessageDialog(null, "Added Successfully");
          }
+         clearMedicineFields();
     }
+        }else{
+            JOptionPane.showMessageDialog(null, "No of Units and Medicine Id field is required.");
         }
     }//GEN-LAST:event_btnAddtocartActionPerformed
+
+    private void cartTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cartTableMouseClicked
+        // TODO add your handling code here:
+        int index = cartTable.getSelectedRow();
+        int a = JOptionPane.showConfirmDialog(null, "Do you want to remove this Medicine","Select",JOptionPane.YES_NO_OPTION);
+        if(a==0){
+         TableModel model = cartTable.getModel();
+         String total = model.getValueAt (index, 5).toString();
+         finalTotalPrice = finalTotalPrice - Integer.parseInt(total);
+         lblFinalTotalPrice.setText(String.valueOf(finalTotalPrice));
+         ((DefaultTableModel) cartTable.getModel()).removeRow(index);
+                                        
+        }
+    }//GEN-LAST:event_cartTableMouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        if (finalTotalPrice !=0){
+        for(int i=0;i<cartTable.getRowCount();i++){
+            try{
+            Connection con=dao.ConnectionProvider.main();
+            Statement st=con.createStatement();
+            st.executeUpdate("update medicine set quantity=quantity-"+ Integer.parseInt(dtm.getValueAt(i,4).toString()) + " where uniqueId="+Integer.parseInt(dtm.getValueAt(i,0).tostring()));
+            }
+                catch(Exception e){
+                    JOptionPane.showMessageDialog(null, e);
+                        }
+        }
+        try {
+          SimpleDateFormat myFormat = new SimpleDateformat("dd-MM-YYYY");
+          Calendar cal = Calendar.getInstance();
+          Connection con=dao.ConnectionProvider.main();
+          PreparedStatement ps = con.prepareStatement("insert into bill (billId,billDate,totalPaid,genratedBy) values(?,?,?,?)");
+          ps.setString(1, billId);
+          ps.setString(2, myFormat.format(cal.getTime()));
+          ps.setString(3, finalTotalPrice);
+          ps.setString(4, username);
+          ps.executeUpdate();
+          
+          
+        }
+        catch(Exception e){
+                    JOptionPane.showMessageDialog(null, e);
+                        }
+        com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
+        try{
+        PdfWriter.getInstance(doc, new FileOutputStream(PharmacyUtils.billPath+""+billId+".pdf"));
+        doc.open();
+        Paragraph pharmacyName = new Paragraph("                                             Pharmacy Management System\n");
+        doc.add(pharmacyName);
+        Paragraph starLine = new Paragraph("************************************************************************");
+        doc.add(starLine);
+        Paragraph details = new Paragraph ("\tBill ID: "+billId+"\nDate: "+ new Date()+"\nTotal Paid: "+finalTotalPrice);
+        doc.add(details);
+        doc.add(starLine);
+        PdfPTable tb1 = new PdfPTable(6);
+        tbl.addCell("Medicine Id");
+        tbl.addCell("Name");
+        tbl.addCell("Company Name ");
+        tbl.addCell("PricePerUnit");
+        tbl.addCell("No of Units");
+        tbl.addCell("Sub Total Price");
+           for (int i=0;i<cartTable.getRowCount();i++){
+         String a = cartTable.getValueAt(i, 0).toString();
+         String b = cartTable.getValueAt(i, 1).toString();
+         String c = cartTable.getValueAt(i, 2).toString();
+         String d = cartTable.getValueAt(i, 3).toString();
+         String e = cartTable.getValueAt(i, 4).toString();
+         String f = cartTable.getValueAt(i, 5).toString();
+         tbl.addCell(a);
+         tbl.addCell(b);
+         tbl.addCell(c);
+         tbl.addCell(d);
+         tbl.addCell(e);
+         tbl.addCell(f);
+        }
+        doc.add(tbl);
+        doc.add(starline);
+        Paragraph thanksMsg = new Paragraph ("ThankYou, Please Visit Again.");
+        doc.add(thanksMsg);
+        OpenPdf.openById(String.valueOf(billId));
+        
+        }
+        catch(Exception e){
+                    JOptionPane.showMessageDialog(null, e);
+                        }
+        doc.close();
+        setVisible(false);
+        new SellMedicine (username).setVisible(true);
+        }
+        else {
+        JOptionPane.showMessageDialog(null, "Please add some medicine to cart ");
+        
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -425,7 +539,6 @@ public class SellMedicine extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -438,6 +551,7 @@ public class SellMedicine extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblFinalTotalPrice;
     private javax.swing.JTable medicinesTable;
     private javax.swing.JTextField txtPricePerUnit;
     private javax.swing.JTextField txtSearch;
