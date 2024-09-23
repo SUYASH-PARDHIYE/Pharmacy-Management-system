@@ -27,6 +27,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import dao.PharmacyUtils;
+import javax.swing.table.TableModel;
+import java.text.SimpleDateFormat;
+
+
 
 
 /**
@@ -431,7 +435,7 @@ public class SellMedicine extends javax.swing.JFrame {
                         }
         }
         try {
-          SimpleDateFormat myFormat = new SimpleDateformat("dd-MM-YYYY");
+          SimpleDateFormat myFormat = new SimpleDateFormat("dd-MM-YYYY");
           Calendar cal = Calendar.getInstance();
           Connection con=dao.ConnectionProvider.main();
           PreparedStatement ps = con.prepareStatement("insert into bill (billId,billDate,totalPaid,genratedBy) values(?,?,?,?)");
@@ -442,8 +446,8 @@ public class SellMedicine extends javax.swing.JFrame {
           ps.executeUpdate();
           
           
-        }
-        catch(Exception e){
+        } 
+       catch(Exception e){
                     JOptionPane.showMessageDialog(null, e);
                         }
         com.itextpdf.text.Document doc = new com.itextpdf.text.Document();

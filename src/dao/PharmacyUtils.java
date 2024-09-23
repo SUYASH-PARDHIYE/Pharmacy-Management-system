@@ -6,7 +6,7 @@ package dao;
 
 /**
  *
- * @author lenovo
+ * @author Suyash Pardhiye
  */
 public class PharmacyUtils {
     public static String billPath = "E:\\";

@@ -1,6 +1,25 @@
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import java.sql.*;
+import javax.swing.*;
+import java.awt.Color;
+import dao.ConnectionProvider.*;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JTable;
+import java.util.Date;
+import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileOutputStream;
+import javax.swing.table.TableModel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -147,7 +166,8 @@ public class AddMedicine extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Price per unit field field is invalid ");
         }
         else{
-            Connection con ConnectionProvider.getCon();
+            try{
+            Connection con=dao.ConnectionProvider.main();
             PreparedStatement ps = con.prepareStatement("Insert into medicine(uniqueId,name,companyName,quantity, price  ) values(?,?,?,?,?)");
             ps.setString(1, uniqueId);
             ps.setString(2, name);
@@ -161,8 +181,9 @@ public class AddMedicine extends javax.swing.JFrame {
             
         }
         catch(Exception e){
-                JOptionPane.showMessageDialog(null,e);
-                }
+            JOptionPane.showMessageDialog(null, e);
+        }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

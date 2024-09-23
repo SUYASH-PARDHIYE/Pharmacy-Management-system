@@ -21,6 +21,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileOutputStream;
+import java.util.Calendar;
 
 /**
  *
@@ -205,9 +206,9 @@ public class UpdateMedicine extends javax.swing.JFrame {
         String uniqueId = txtMedicineId.getText();
         String name = txtName.getText();
         String comapanyName = txtCompanyname.getText();
-        String Quantity = txtQuantity.getText();
+        String quantity = txtQuantity.getText();
         String price = txtPricePerUnit.getText();
-        String AddQuantity = txtAddQuantity.getText();
+        String addQuantity = txtAddQuantity.getText();
         
         int totalQuantity = 0;
         if (addQuantity.equals("")){
@@ -227,17 +228,30 @@ public class UpdateMedicine extends javax.swing.JFrame {
         }else if(!price.matches(numberPattern)){
         JOptionPane.showMessageDialog(null, "Price Per Unit Field is invalid.");
         }else{
-        try {
-            Connection con=dao.ConnectionProvider.main();
-            Statement st=con.createStatement();
-            ResultSet rs=st.executeQuery("select *from medicine where uniqueId like '"+uniqueId+"%'");
-            while(rs.next()){  
-            }
-        catch(Exception e) { 
-                JOptionPane.showMessageDialog(null, e); 
-        } 
-        }
-    }          
+       try {
+          Connection con=dao.ConnectionProvider.main();
+          PreparedStatement ps = con.prepareStatement("update medicine set name=?,companyName=?,quantity=?,price=? where uniqueId=?");
+          ps.setString(1, name);
+          ps.setString(2, companyName);
+          ps.setString(3, totalQuantity);
+          ps.setString(4, price);
+          ps.setString(5, Integer.parseInt(uniqueId));
+          ps.executeUpdate();
+          JOptionPane.showMessageDialog(null, "Medicine Updated Successfully ");
+          
+
+
+          
+           // Statement st=con.createStatement();
+           // ResultSet rs=st.executeQuery("select *from medicine where uniqueId like '"+uniqueId+"%'");
+            while(rs.next())
+          }
+        catch(Exception e){
+                    JOptionPane.showMessageDialog(null, e);
+                        }
+}
+        
+}          
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed

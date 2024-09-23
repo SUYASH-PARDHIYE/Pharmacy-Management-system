@@ -21,6 +21,10 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileOutputStream;
+import javax.swing.table.TableModel;
+
+
+
 
 /**
  *

@@ -2,6 +2,26 @@
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
+import java.sql.*;
+import javax.swing.*;
+import java.awt.Color;
+import dao.ConnectionProvider.*;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JTable;
+import java.util.Date;
+import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileOutputStream;
+import javax.swing.table.TableModel;
+
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -19,7 +39,7 @@ public class ViewMedicine extends javax.swing.JFrame {
      */
     public ViewMedicine() {
         initComponents();
-        setLoctionRelationTo(null);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -96,13 +116,13 @@ public class ViewMedicine extends javax.swing.JFrame {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         try{
-            Connection con = connectionProvider.getCon();
-            Statment st = con.creatStatement();
-            Result rs = st.executeQuery("select *from medicine");
+            Connection con=dao.ConnectionProvider.main();
+            Statement st=con.createStatement();
+            ResultSet rs = st.executeQuery("select *from medicine");
             while(rs.next()){
-                model.addRow(newObject[]{rs.getString("medicine pk"),rs.getString("uniqueId"),rs.getString("name"),rs.getString("companyName"),rs.getString("quantity"),rs.getString("price")});
+                model.addRow(new Object[]{rs.getString("medicine_pk"),rs.getString("uniqueId"),rs.getString("name"),rs.getString("companyName"),rs.getString("quantity"),rs.getString("price")});
             }
         }
         catch(Exception e){
@@ -112,10 +132,10 @@ public class ViewMedicine extends javax.swing.JFrame {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
-        int index = jTable.getSelectedRow();
-        TableModel model = jTable.getModel();
+        int index = jTable1.getSelectedRow();
+        TableModel model = jTable1.getModel();
         String id = model.getValueAt(index, 0).toString();
-        int a = jOptionPane.showConfimDialog(null, "Do you want to delete this Medicine","Select", JOptionPane.YES_NO_OPTIN);
+        int a = JOptionPane.showConfirmDialog(null, "Do you want to delete this Medicine","Select", JOptionPane.YES_NO_OPTION);
         if(a==0){
             try{
                 Connection con = ConnectionProvider.getCon();

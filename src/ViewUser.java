@@ -102,13 +102,13 @@ public class ViewUser extends javax.swing.JFrame {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         try{
             Connection con=dao.ConnectionProvider.main();
             Statement st=con.createStatement();
             ResultSet rs = st.executeQuery("select *from appuser");
             while(rs.next()){
-                model.addRow(new Object[]{rs.getString("appuser_pk"),{rs.getString("name"),{rs.getString("userRole"),{rs.getString("dob"),{rs.getString("mobileNumber"),{rs.getString("username"),{rs.getString("password"),{rs.getString("address")})
+                model.addRow(new Object[]{rs.getString("appuser_pk"),rs.getString("name"),rs.getString("userRole"),rs.getString("dob"),rs.getString("email"),rs.getString("mobileNumber"),rs.getString("username"),rs.getString("password"),rs.getString("address")});
             }
         }
         catch(Exception e){
@@ -124,23 +124,24 @@ public class ViewUser extends javax.swing.JFrame {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
         int index = jTable1.getSelectedRow();
-        TableModel model = jTable1 .getModel();
+        TableModel model = jTable1.getModel();
         String id = model.getValueAt(index, 0).toString();
-        String UsernameTable = model.getValueAt(index, 6).toString();
+        String usernameTable = model.getValueAt(index, 6).toString();
         if(username.equals(usernameTable)){
             JOptionPane.showMessageDialog(null, "You can't delete your own account");
         }
         else{
-            int a = JOptionPane.showMessageDialog(null," Do you want to delete this user","Select",JOptionPane.YES_NO_OPTION);
+            int a = JOptionPane.showConfirmDialog(null," Do you want to delete this user","Select",JOptionPane.YES_NO_OPTION);
             if(a== 0){
                 try{
                     Connection con = ConnectionProvider.getCon();
                     PreparedStatement ps = con.prepareStatement("delete from appuser where appuser_pk=?");
                     ps.setString(1, id);
                     ps.executeUpdate();
-                    JOptionPane.showMessageDialog(null,("User successfully Deleted"));
+                    JOptionPane.showMessageDialog(null,"User successfully Deleted");
                     setVisible(false);
                     new ViewUser(username).setVisible(true);
+                }
                 catch(Exception e){
                         JOptionPane.showMessageDialog(null, e);
                         }

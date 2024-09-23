@@ -65,6 +65,11 @@ public class PharmacistDashboard extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/viewUser.png"))); // NOI18N
         jButton2.setText("View Medicine");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(292, 229, 400, -1));
 
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -129,7 +134,7 @@ public class PharmacistDashboard extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
-        int a = JOptionPane.showConfirmDialog(null, "Do you want to Close Application", "Select", JOptionpane.YES_NO_OPTION);
+        int a = JOptionPane.showConfirmDialog(null, "Do you want to Close Application", "Select", JOptionPane.YES_NO_OPTION);
 
         if (a == 0) {
            System.exit(0);
@@ -138,7 +143,7 @@ public class PharmacistDashboard extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        int a = JOptionPane.showConfirmDialog(null, "Do you want to Logout", "Select", JOptionpane.YES_NO_OPTION);
+        int a = JOptionPane.showConfirmDialog(null, "Do you want to Logout", "Select", JOptionPane.YES_NO_OPTION);
 
         if (a == 0) {
             setVisible(false);
@@ -150,6 +155,11 @@ public class PharmacistDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
         new Profile(username).setVisible(true);
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        new ViewMedicine().setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
