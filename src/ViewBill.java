@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+
 import java.sql.*;
 import javax.swing.*;
 import java.awt.Color;
@@ -20,6 +21,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import common.OpenPdf;
 import java.io.FileOutputStream;
 import javax.swing.table.TableModel;
 
@@ -125,7 +127,7 @@ public class ViewBill extends javax.swing.JFrame {
                 
             catch(Exception e){
                 JOptionPane.showMessageDialog(null, e);
-                   }
+                   } 
         
     }//GEN-LAST:event_formComponentShown
 
@@ -134,6 +136,7 @@ public class ViewBill extends javax.swing.JFrame {
         int index = jTable1.getSelectedRow();
         TableModel model = jTable1.getModel();
         String id = model.getValueAt(index, 0).toString();
+        //OpenPdf.openById(id);
         OpenPdf.openById(id);
     }//GEN-LAST:event_jTable1MouseClicked
 

@@ -2,7 +2,7 @@
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
-
+import javax.swing.table.TableModel;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -134,7 +134,7 @@ public class ViewUser extends javax.swing.JFrame {
             int a = JOptionPane.showConfirmDialog(null," Do you want to delete this user","Select",JOptionPane.YES_NO_OPTION);
             if(a== 0){
                 try{
-                    Connection con = ConnectionProvider.getCon();
+                    Connection con=dao.ConnectionProvider.main();
                     PreparedStatement ps = con.prepareStatement("delete from appuser where appuser_pk=?");
                     ps.setString(1, id);
                     ps.executeUpdate();

@@ -5,6 +5,7 @@
 package common;
 
 import java.sql.Connection;
+import java.io.File;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import dao.PharmacyUtils;
@@ -16,7 +17,7 @@ import dao.PharmacyUtils;
 public class OpenPdf {
     public static void openById(String id ){
     try{
-    if (new File(PharmacyUtils.billPath+id+".pdf")).exist()){
+    if ( (new File(PharmacyUtils.billPath+id+".pdf")).exists()){
         Process p = Runtime 
                 .getRuntime()
                 .exec("rundll32 url.dll,FileProtocolHandler" +PharmacyUtils.billPath+""+id+".pdf");
