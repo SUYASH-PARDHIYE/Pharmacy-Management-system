@@ -10,6 +10,33 @@ import java.sql.*;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import dao.ConnectionProvider.*;
+import java.sql.*;
+import javax.swing.*;
+import java.awt.Color;
+import dao.ConnectionProvider.*;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JTable;
+import java.util.Date;
+import javax.swing.table.DefaultTableModel;
+import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import common.OpenPdf;
+import java.io.FileOutputStream;
+import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Calendar;
+import dao.PharmacyUtils;
+import javax.swing.table.TableModel;
+import java.text.SimpleDateFormat;
 /**
  *
  * @author Suyash Pardhiye
@@ -40,22 +67,22 @@ public class AddUser extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        ComboUserRole = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtName = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        dateDOB = new com.toedter.calendar.JDateChooser();
         jLabel5 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtMobileNumber = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
         iconLabel = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        txtPassword = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        txtAddress = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
@@ -73,71 +100,74 @@ public class AddUser extends javax.swing.JFrame {
         jLabel2.setText("User Role");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 111, -1, -1));
 
-        jComboBox1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Pharmacist" }));
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 145, 300, -1));
+        ComboUserRole.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ComboUserRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Pharmacist" }));
+        getContentPane().add(ComboUserRole, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 145, 300, -1));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Name");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 193, 37, -1));
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtName.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtNameActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 227, 300, -1));
+        getContentPane().add(txtName, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 227, 300, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setText("DOB (Date Of Birth)");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 276, -1, -1));
 
-        jDateChooser1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        getContentPane().add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 310, 300, -1));
+        dateDOB.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        getContentPane().add(dateDOB, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 310, 300, -1));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("Mobile Number");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 362, -1, -1));
 
-        jTextField2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 396, 300, -1));
+        txtMobileNumber.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        getContentPane().add(txtMobileNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 396, 300, -1));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setText("Email");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 111, 37, -1));
 
-        jTextField3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 145, 300, -1));
+        txtEmail.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        getContentPane().add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 145, 300, -1));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel7.setText("Username");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 193, -1, -1));
 
         txtUsername.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtUsername.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUsernameActionPerformed(evt);
+            }
+        });
         txtUsername.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtUsernameKeyReleased(evt);
             }
         });
         getContentPane().add(txtUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 227, 300, -1));
-
-        iconLabel.setText("jLabel8");
         getContentPane().add(iconLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(772, 230, -1, -1));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel9.setText("Password");
         getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 276, -1, -1));
 
-        jTextField5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        getContentPane().add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 310, 300, -1));
+        txtPassword.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        getContentPane().add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 310, 300, -1));
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel10.setText("Address");
         getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 362, -1, -1));
 
-        jTextField6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        getContentPane().add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 396, 300, -1));
+        txtAddress.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        getContentPane().add(txtAddress, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 396, 300, -1));
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/save.png"))); // NOI18N
@@ -165,11 +195,68 @@ public class AddUser extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        String userRole = (String) ComboUserRole.getSelectedItem();
+        SimpleDateFormat dFormat = new SimpleDateFormat("dd-MM-YYYY");
+        Date date = dateDOB.getDate();
+        String dob = "";
+        if(date !=null){
+         dob = dFormat.format(dateDOB.getDate());
+         
+       }
+        String mobileNumber = txtMobileNumber.getText();
+        String email = txtEmail.getText();
+        String username = txtUsername.getText();
+        String password = txtPassword.getText();
+        String address = txtAddress.getText();
+        if (name.equals("")) {
+        JOptionPane.showMessageDialog(null, "Name field is required.");
+        }else if (dob.equals("")) {
+        JOptionPane.showMessageDialog(null, "Date of Birth field is required.");
+        }else if (mobileNumber.equals("")) {
+        JOptionPane.showMessageDialog(null, "Mobile Number field is required.");
+        }else if (!mobileNumber.matches(mobileNumberPattern) || mobileNumber.length() != 10) {
+        JOptionPane.showMessageDialog(null, "Mobile Number field is invalid.");
+        }else if (email.equals ("")) {
+        JOptionPane.showMessageDialog(null, "Email field is required.");
+        }else if (!email.matches (emailPattern)) {
+        JOptionPane.showMessageDialog(null, "Email field is invalid.");
+        }else if (username.equals("")) {
+        JOptionPane.showMessageDialog(null, "Username field is required.");
+        } else if (checkUsername == 1) {
+        JOptionPane.showMessageDialog(null, "Username already exist.");
+        }else if (password.equals("")) {
+        JOptionPane.showMessageDialog(null, "Password field is required.");
+        }else if (address.equals ("")) {
+        JOptionPane.showMessageDialog(null, "Address field is required.");
+        }else{
+             try{
+                 Connection con=dao.ConnectionProvider.main();
+                 PreparedStatement ps = con.prepareStatement("insert into appuser (userRole,name,dob,mobileNumber,email,username,password,address) values(?,?,?,?,?,?,?,?)"); 
+                 
+                ps.setString(1, userRole);
+                ps.setString(2, name );
+                    
+                ps.setString(3, dob);
+                ps.setString(4, mobileNumber);
+                ps.setString(5, email);
+                ps.setString(6, username);
+                ps.setString(7, password);
+                ps.setString(8, address);
+                ps.executeUpdate();
+                JOptionPane.showMessageDialog(null, "User Added Successfully");
+                setVisible(false);
+                new AddUser().setVisible(true);
+                
+             }
+             catch(Exception e){
+                JOptionPane.showMessageDialog(null, e);
+             }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtNameActionPerformed
 
     private void txtUsernameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsernameKeyReleased
         // TODO add your handling code here:
@@ -205,6 +292,10 @@ public class AddUser extends javax.swing.JFrame {
         // TODO add your handling code here:
         setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUsernameActionPerformed
 
     /**
      * @param args the command line arguments
@@ -242,11 +333,11 @@ public class AddUser extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> ComboUserRole;
+    private com.toedter.calendar.JDateChooser dateDOB;
     private javax.swing.JLabel iconLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -258,11 +349,11 @@ public class AddUser extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField txtAddress;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtMobileNumber;
+    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }
