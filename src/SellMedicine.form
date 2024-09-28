@@ -63,7 +63,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="1340" y="6" width="-1" height="-1"/>
+          <AbsoluteConstraints x="1330" y="10" width="-1" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -108,7 +108,7 @@
         <Component class="javax.swing.JTable" name="medicinesTable">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="1" rowCount="4">
+              <Table columnCount="1" rowCount="0">
                 <Column editable="true" title="Medicine " type="java.lang.Object"/>
               </Table>
             </Property>
@@ -262,21 +262,6 @@
         </Constraint>
       </Constraints>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtUnits">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="12" style="1"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtUnitsKeyReleased"/>
-      </Events>
-      <Constraints>
-        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="994" y="187" width="300" height="-1"/>
-        </Constraint>
-      </Constraints>
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -323,7 +308,7 @@
               <Table columnCount="6" rowCount="0">
                 <Column editable="true" title="Medicine Id" type="java.lang.Object"/>
                 <Column editable="true" title="Name" type="java.lang.Object"/>
-                <Column editable="true" title="Company Name" type="java.lang.Object"/>
+                <Column editable="true" title="companyName" type="java.lang.Object"/>
                 <Column editable="true" title="Price Per Unit " type="java.lang.Object"/>
                 <Column editable="true" title="No of Unit" type="java.lang.Object"/>
                 <Column editable="true" title="Total Price " type="java.lang.Object"/>
@@ -443,11 +428,18 @@
         </Constraint>
       </Constraints>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel11">
+    <Component class="javax.swing.JTextField" name="txtNoOFUnits">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNoOFUnitsKeyReleased"/>
+      </Events>
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+          <AbsoluteConstraints x="994" y="187" width="300" height="-1"/>
+        </Constraint>
+      </Constraints>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel10">
       <Properties>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-        </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/images/adminDashboardBackground.png"/>
         </Property>

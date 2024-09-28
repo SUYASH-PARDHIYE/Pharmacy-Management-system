@@ -50,22 +50,23 @@ public class SellMedicine extends javax.swing.JFrame {
         initComponents();
     }
     public SellMedicine(String tempUsername){
-           initComponents();
+           initComponents(); 
            username = tempUsername;
            setLocationRelativeTo(null);
     }
     private void medicineName(String nameOrUniqueId){
     DefaultTableModel model = (DefaultTableModel) medicinesTable.getModel();
-    try{
+    model.setRowCount(0);
+    try{    
     Connection con=dao.ConnectionProvider.main();
             Statement st=con.createStatement();
-             ResultSet rs=st.executeQuery("select *from medicine where name like = '"+nameOrUniqueId + "%'");
+             ResultSet rs=st.executeQuery("select *from medicine where name like  '" + nameOrUniqueId + "%' or uniqueId like '" + nameOrUniqueId + "%'");
              while (rs.next()){
              //model.addRow(new object[](rs.getString("uniqueId")+"-"+rs.getString("name")));
              model.addRow(new Object[]{rs.getString("uniqueId") + "-" + rs.getString("name")});
              }
     }
-    catch(Exception e){
+    catch(Exception e){ 
       JOptionPane.showMessageDialog(null, e);
     }
     }
@@ -74,7 +75,7 @@ public class SellMedicine extends javax.swing.JFrame {
        txtname.setText("");
        txtcompanyName.setText("");
        txtPricePerUnit.setText("");
-       txtUnits.setText("");
+       txtNoOFUnits.setText("");
        txtTotalPrice.setText("");       
      }
     
@@ -107,7 +108,6 @@ public class SellMedicine extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         txtPricePerUnit = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        txtUnits = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         txtTotalPrice = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -116,7 +116,8 @@ public class SellMedicine extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         lblFinalTotalPrice = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
-        jLabel11 = new javax.swing.JLabel();
+        txtNoOFUnits = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -139,7 +140,7 @@ public class SellMedicine extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1340, 6, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1330, 10, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -155,10 +156,7 @@ public class SellMedicine extends javax.swing.JFrame {
 
         medicinesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+
             },
             new String [] {
                 "Medicine "
@@ -215,14 +213,6 @@ public class SellMedicine extends javax.swing.JFrame {
         jLabel7.setText("No of Units");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(994, 153, -1, -1));
 
-        txtUnits.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        txtUnits.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtUnitsKeyReleased(evt);
-            }
-        });
-        getContentPane().add(txtUnits, new org.netbeans.lib.awtextra.AbsoluteConstraints(994, 187, 300, -1));
-
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Total Price");
@@ -236,7 +226,7 @@ public class SellMedicine extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Medicine Id", "Name", "Company Name", "Price Per Unit ", "No of Unit", "Total Price "
+                "Medicine Id", "Name", "companyName", "Price Per Unit ", "No of Unit", "Total Price "
             }
         ));
         cartTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -278,9 +268,15 @@ public class SellMedicine extends javax.swing.JFrame {
         });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1126, 636, -1, -1));
 
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/adminDashboardBackground.png"))); // NOI18N
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        txtNoOFUnits.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNoOFUnitsKeyReleased(evt);
+            }
+        });
+        getContentPane().add(txtNoOFUnits, new org.netbeans.lib.awtextra.AbsoluteConstraints(994, 187, 300, -1));
+
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/adminDashboardBackground.png"))); // NOI18N
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -297,11 +293,10 @@ public class SellMedicine extends javax.swing.JFrame {
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
         medicineName("");
-        txtuniqueId.setEditable(false);
+       txtuniqueId.setEditable(false);
        txtname.setEditable(false);
        txtcompanyName.setEditable(false);
        txtPricePerUnit.setEditable(false);
-       txtUnits.setEditable(false);
        txtTotalPrice.setEditable(false);
     }//GEN-LAST:event_formComponentShown
 
@@ -321,13 +316,13 @@ public class SellMedicine extends javax.swing.JFrame {
         try {
             Connection con=dao.ConnectionProvider.main();
             Statement st=con.createStatement();
-             ResultSet rs=st.executeQuery("select *from medicine where uniqueId like = '"+uniqueId + "");
+             ResultSet rs=st.executeQuery("select *from medicine where uniqueId="+uniqueId[0]+"");
              while (rs.next()){
-             txtuniqueId.setText("uniqueId[0]");
+             txtuniqueId.setText(uniqueId[0]);
              txtname.setText(rs.getString("name"));
-             txtcompanyName.setText(rs.getString("comapanyName"));
+             txtcompanyName.setText(rs.getString("companyName"));
              txtPricePerUnit.setText(rs.getString("price"));
-             txtUnits.setText("");
+             txtNoOFUnits.setText("");
              txtTotalPrice.setText("");       
              }
     }
@@ -337,33 +332,16 @@ public class SellMedicine extends javax.swing.JFrame {
     
     }//GEN-LAST:event_medicinesTableMouseClicked
 
-    private void txtUnitsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUnitsKeyReleased
-        // TODO add your handling code here:
-        String noOfUnits = txtUnits.getText();
-        if (!noOfUnits.equals("")){
-        String price = txtPricePerUnit.getText();
-        if (!noOfUnits.matches(numberPattern)){
-            JOptionPane.showMessageDialog(null, "Number of units Fied is invalid.");
-            
-        }
-        int totalPrice = Integer.parseInt(noOfUnits) * Integer.parseInt(price);
-        txtTotalPrice.setText(String.valueOf(totalPrice));
-        }
-        else{
-        txtTotalPrice.setText("");
-        }
-    }//GEN-LAST:event_txtUnitsKeyReleased
-
     private void btnAddtocartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddtocartActionPerformed
         // TODO add your handling code here:
-        String noOfUnits = txtUnits.getText();
+        String noOfUnits = txtNoOFUnits.getText();
         String uniqueId = txtuniqueId.getText();
         
         if (!noOfUnits.equals("") && !uniqueId.equals("")){
              
              String name = txtname.getText();
              String companyName = txtcompanyName.getText();
-             String PricePerUnit = txtPricePerUnit.getText();
+             String pricePerUnit = txtPricePerUnit.getText();
              String totalPrice = txtTotalPrice.getText();  
              int checkStock = 0;
              int checkMedicineAlreadyExistInCart = 0;
@@ -371,7 +349,7 @@ public class SellMedicine extends javax.swing.JFrame {
              try {
             Connection con=dao.ConnectionProvider.main();
             Statement st=con.createStatement();
-             ResultSet rs=st.executeQuery("select *from medicine where uniqueId like = '"+uniqueId + "");
+             ResultSet rs=st.executeQuery("select *from medicine where uniqueId="+uniqueId+"");
              while (rs.next()){
               if(rs.getInt("quantity") >= Integer.parseInt(noOfUnits)){
                checkStock = 1;
@@ -395,7 +373,7 @@ public class SellMedicine extends javax.swing.JFrame {
          } 
          }
          if(checkMedicineAlreadyExistInCart == 0){
-         dtm.addRow(new Object[] {uniqueId,name,companyName,});
+         dtm.addRow(new Object[] {uniqueId,name,companyName,pricePerUnit,noOfUnits,totalPrice});
          finalTotalPrice = finalTotalPrice + Integer.parseInt(totalPrice);
          lblFinalTotalPrice.setText(String.valueOf(finalTotalPrice));
          JOptionPane.showMessageDialog(null, "Added Successfully");
@@ -432,7 +410,8 @@ public class SellMedicine extends javax.swing.JFrame {
             try{
             Connection con=dao.ConnectionProvider.main();
             Statement st=con.createStatement();
-            st.executeUpdate("update medicine set quantity=quantity-"+Integer.parseInt(dtm.getValueAt(i,4).toString()) + " where uniqueId="+Integer.parseInt(dtm.getValueAt(i,0).toString()));
+            //st.executeUpdate("update medicine set quantity=quantity-"+Integer.parseInt(dtm.getValueAt(i,4).toString()) + "where uniqueId="+Integer.parseInt(dtm.getValueAt(i, 0).toString()));
+             st.executeUpdate("update medicine set quantity=quantity-"+Integer.parseInt(dtm.getValueAt(i,4).toString()) + "where uniqueId="+Integer.parseInt(dtm.getValueAt(i, 0).toString()));
             }
                 catch(Exception e){
                     JOptionPane.showMessageDialog(null, e);
@@ -469,7 +448,7 @@ public class SellMedicine extends javax.swing.JFrame {
         PdfPTable tb1 = new PdfPTable(6);
         tb1.addCell("Medicine Id");
         tb1.addCell("Name");
-        tb1.addCell("Company Name ");
+        tb1.addCell("companyName ");
         tb1.addCell("PricePerUnit");
         tb1.addCell("No of Units");
         tb1.addCell("Sub Total Price");
@@ -506,6 +485,24 @@ public class SellMedicine extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void txtNoOFUnitsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNoOFUnitsKeyReleased
+        // TODO add your handling code here:
+        String noOfUnits = txtNoOFUnits.getText();
+        
+        if (!noOfUnits.equals("")){
+                  String price = txtPricePerUnit.getText();
+        if (!noOfUnits.matches(numberPattern)){
+            JOptionPane.showMessageDialog(null, "Number of units Fied is invalid.");
+            
+        }
+        int totalPrice = Integer.parseInt(noOfUnits) * Integer.parseInt(price);
+        txtTotalPrice.setText(String.valueOf(totalPrice));
+        }
+        else{
+        txtTotalPrice.setText("");
+        }
+    }//GEN-LAST:event_txtNoOFUnitsKeyReleased
 
     /**
      * @param args the command line arguments
@@ -548,7 +545,7 @@ public class SellMedicine extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -562,10 +559,10 @@ public class SellMedicine extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblFinalTotalPrice;
     private javax.swing.JTable medicinesTable;
+    private javax.swing.JTextField txtNoOFUnits;
     private javax.swing.JTextField txtPricePerUnit;
     private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtTotalPrice;
-    private javax.swing.JTextField txtUnits;
     private javax.swing.JTextField txtcompanyName;
     private javax.swing.JTextField txtname;
     private javax.swing.JTextField txtuniqueId;
