@@ -54,13 +54,13 @@ public class SellMedicine extends javax.swing.JFrame {
            username = tempUsername;
            setLocationRelativeTo(null);
     }
-    private void medicineName(String nameOrUniqueId){
+    private void medicineName(String nameOruniqueId){
     DefaultTableModel model = (DefaultTableModel) medicinesTable.getModel();
     model.setRowCount(0);
     try{    
     Connection con=dao.ConnectionProvider.main();
             Statement st=con.createStatement();
-             ResultSet rs=st.executeQuery("select *from medicine where name like  '" + nameOrUniqueId + "%' or uniqueId like '" + nameOrUniqueId + "%'");
+             ResultSet rs=st.executeQuery("select *from medicine where name like  '" + nameOruniqueId + "%' or uniqueId like '" + nameOruniqueId + "%'");
              while (rs.next()){
              //model.addRow(new object[](rs.getString("uniqueId")+"-"+rs.getString("name")));
              model.addRow(new Object[]{rs.getString("uniqueId") + "-" + rs.getString("name")});
@@ -79,7 +79,7 @@ public class SellMedicine extends javax.swing.JFrame {
        txtTotalPrice.setText("");       
      }
     
-    public String getUniqueId(String prefix){
+    public String getuniqueId(String prefix){
     return prefix + System.nanoTime();
     
     }
@@ -310,9 +310,9 @@ public class SellMedicine extends javax.swing.JFrame {
         // TODO add your handling code here:
         int index = medicinesTable.getSelectedRow();
         TableModel model = medicinesTable.getModel();
-        String nameorUniqueId = model.getValueAt (index, 0).toString();
+        String nameoruniqueId = model.getValueAt (index, 0).toString();
         
-        String uniqueId [] = nameorUniqueId.split("-",0);
+        String uniqueId [] = nameoruniqueId.split("-",0);
         try {
             Connection con=dao.ConnectionProvider.main();
             Statement st=con.createStatement();
@@ -365,7 +365,7 @@ public class SellMedicine extends javax.swing.JFrame {
          DefaultTableModel dtm = (DefaultTableModel) cartTable.getModel();
          if (cartTable.getRowCount() !=0){
          for (int i=0 ;i <cartTable.getRowCount();i++){
-             if (Integer.parseInt(dtm.getValueAt(i, 0).toString()) == Integer.parseInt(uniqueId)){
+             if (Integer.parseInt(dtm.getValueAt(i,0).toString()) == Integer.parseInt(uniqueId)){
              checkMedicineAlreadyExistInCart = 1;
              JOptionPane.showMessageDialog(null, "Medicine already exist in cart");
              
@@ -402,7 +402,7 @@ public class SellMedicine extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         if (finalTotalPrice !=0){
-            billId = getUniqueId("Bill-");
+            billId = getuniqueId("Bill-"); 
             
             DefaultTableModel dtm = (DefaultTableModel) cartTable.getModel();
             if (cartTable.getRowCount() != 0){
@@ -411,7 +411,8 @@ public class SellMedicine extends javax.swing.JFrame {
             Connection con=dao.ConnectionProvider.main();
             Statement st=con.createStatement();
             //st.executeUpdate("update medicine set quantity=quantity-"+Integer.parseInt(dtm.getValueAt(i,4).toString()) + "where uniqueId="+Integer.parseInt(dtm.getValueAt(i, 0).toString()));
-             st.executeUpdate("update medicine set quantity=quantity-"+Integer.parseInt(dtm.getValueAt(i,4).toString()) + "where uniqueId="+Integer.parseInt(dtm.getValueAt(i, 0).toString()));
+             //st.executeUpdate("update medicine set quantity=quantity-"+Integer.parseInt(dtm.getValueAt(i,4).toString()) + "where uniqueId="+Integer.parseInt(dtm.getValueAt(i, 0).toString()));
+            st.executeUpdate("update medicine set quantity=quantity-"+Integer.parseInt(dtm.getValueAt(i,0).toString()) + " where uniqueId="+Integer.parseInt(dtm.getValueAt(i, 0).toString())); 
             }
                 catch(Exception e){
                     JOptionPane.showMessageDialog(null, e);
@@ -422,7 +423,7 @@ public class SellMedicine extends javax.swing.JFrame {
           SimpleDateFormat myFormat = new SimpleDateFormat("dd-MM-YYYY");
           Calendar cal = Calendar.getInstance();
           Connection con=dao.ConnectionProvider.main();
-          PreparedStatement ps = con.prepareStatement("insert into bill (billId,billDate,totalPaid,genratedBy) values(?,?,?,?)");
+          PreparedStatement ps = con.prepareStatement("insert into bill (billId,billDate,totalPaid,generatedBy) values(?,?,?,?)");
           ps.setString(1, billId);
           ps.setString(2, myFormat.format(cal.getTime()));
           ps.setInt(3, finalTotalPrice);
@@ -431,7 +432,7 @@ public class SellMedicine extends javax.swing.JFrame {
           
           
         } 
-       catch(Exception e){
+       catch(Exception e){ 
                     JOptionPane.showMessageDialog(null, e);
                         }
         com.itextpdf.text.Document doc = new com.itextpdf.text.Document();

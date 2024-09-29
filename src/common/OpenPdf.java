@@ -20,7 +20,7 @@ public class OpenPdf {
     if ( (new File(PharmacyUtils.billPath+id+".pdf")).exists()){
         Process p = Runtime 
                 .getRuntime()
-                .exec("rundll32 url.dll,FileProtocolHandler" +PharmacyUtils.billPath+""+id+".pdf");
+               .exec("rund1132 url.dll,FileProtocolHandler" +PharmacyUtils.billPath+""+id+".pdf");
         
     }
     else{
