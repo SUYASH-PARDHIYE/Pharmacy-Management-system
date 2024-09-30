@@ -439,9 +439,9 @@ public class SellMedicine extends javax.swing.JFrame {
         try{
         PdfWriter.getInstance(doc, new FileOutputStream(PharmacyUtils.billPath+""+billId+".pdf"));
         doc.open();
-        Paragraph pharmacyName = new Paragraph("                                             Pharmacy Management System\n");
+        Paragraph pharmacyName = new Paragraph("                                                Pharmacy Management System\n");
         doc.add(pharmacyName);
-        Paragraph starLine = new Paragraph("************************************************************************");
+        Paragraph starLine = new Paragraph("**************************************************************************************************************");
         doc.add(starLine);
         Paragraph details = new Paragraph ("\tBill ID: "+billId+"\nDate: "+ new Date()+"\nTotal Paid: "+finalTotalPrice);
         doc.add(details);

@@ -9,7 +9,7 @@ package dao;
  * @author Suyash Pardhiye
  */
 public class PharmacyUtils {
-   public static String billPath = "C:\\";
-    //public static String billPath = "C:\\OM\\Clone\\Bills";
+   //public static String billPath = "C:\\";
+    public static String billPath = "C:\\OM\\Clone\\Bills";
     
 }
