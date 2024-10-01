@@ -137,7 +137,7 @@ public class Profile extends javax.swing.JFrame {
     private void jButton1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jButton1ComponentShown
         // TODO add your handling code here:
         try {
-            Connection con = ConnectionProvider.getCon();
+            Connection con=dao.ConnectionProvider.main();
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("select *from appuser where username='"+username+"'");
             while(rs.next()){
@@ -174,7 +174,7 @@ public class Profile extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Address field is required.");
         }else{
             try{
-                Connection con = ConnectionProvider.getCon();
+                Connection con=dao.ConnectionProvider.main();
                 PreparedStatement ps = con.prepareStatement("update appuser set name ?,mobileNumber=?,email=?,address=? where username=?");
                 ps.setString(1,name);
                 ps.setString(2,mobileNumber);

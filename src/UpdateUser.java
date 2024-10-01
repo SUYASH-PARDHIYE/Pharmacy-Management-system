@@ -3,6 +3,7 @@ import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import java.sql.*;
 import java.util.Date;
+import dao.ConnectionProvider.*;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -156,9 +157,9 @@ public class UpdateUser extends javax.swing.JFrame {
         if (username.equals("")) {
             JOptionPane.showMessageDialog(null, "Username field is required.");
         } else {
-            SimpleDateFormat dFormxxxat = new SimpleDateFormate("dd-MM-yyyy");
+            SimpleDateFormat dFormat = new SimpleDateFormat("dd-MM-yyyy");
             try {
-                connection con = (connection) ConnectionProvider.getCon();
+                Connection con=dao.ConnectionProvider.main();
                 Statement st = con.createStatement();
                 ResultSet rs = st.executeQuery("select *from appuser where username='" + username + "'");
                 while (rs.next()) {
@@ -227,7 +228,7 @@ public class UpdateUser extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Address field is required .");
         } else {
             try {
-                Connection con = ConnectionProvider.getCon();
+                Connection con=dao.ConnectionProvider.main();
                 PreparedStatement ps = con.prepareStatement("update appuser set userRole=?,name=?,dob=?,mobileNumber=?,email=?,address=? where username=?");
                 ps.setString(1,userRole);
                 ps.setString(2,name);

@@ -138,7 +138,7 @@ public class ViewMedicine extends javax.swing.JFrame {
         int a = JOptionPane.showConfirmDialog(null, "Do you want to delete this Medicine","Select", JOptionPane.YES_NO_OPTION);
         if(a==0){
             try{
-                Connection con = ConnectionProvider.getCon();
+                Connection con=dao.ConnectionProvider.main();
                 PreparedStatement ps = con.prepareStatement("delete from medicine where medicine_pk=?");
                 ps.setString(1, id);
                 ps.executeUpdate();

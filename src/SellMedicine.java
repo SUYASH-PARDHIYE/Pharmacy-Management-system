@@ -2,6 +2,34 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+/* import java.sql.*;
+import javax.swing.*;
+import java.awt.Color;
+import dao.ConnectionProvider.*;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JTable;
+import java.util.Date;
+import javax.swing.table.DefaultTableModel;
+import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import common.OpenPdf;
+import java.io.FileOutputStream;
+import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Calendar;
+import dao.PharmacyUtils;
+import javax.swing.table.TableModel;
+import java.text.SimpleDateFormat; */
+
 import java.sql.*;
 import javax.swing.*;
 import java.awt.Color;
@@ -54,12 +82,12 @@ public class SellMedicine extends javax.swing.JFrame {
            username = tempUsername;
            setLocationRelativeTo(null);
     }
-    private void medicineName(String nameorUniqueId){
+    private void medicineName(String nameOrUniqueId){
     DefaultTableModel model = (DefaultTableModel) medicinesTable.getModel();
     try{
     Connection con=dao.ConnectionProvider.main();
             Statement st=con.createStatement();
-             ResultSet rs=st.executeQuery("select *from medicine where name like = '"+nameOrUniqueId + "%'");
+             ResultSet rs=st.executeQuery("select *from medicine where name like '"+nameOrUniqueId+"%' or uniqueId like '"+nameOrUniqueId+"%'");
              while (rs.next()){
              //model.addRow(new object[](rs.getString("uniqueId")+"-"+rs.getString("name")));
              model.addRow(new Object[]{rs.getString("uniqueId") + "-" + rs.getString("name")});
@@ -424,15 +452,20 @@ public class SellMedicine extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         if (finalTotalPrice !=0){
+            billId = getUniqueId("Bill-");
+            
+            DefaultTableModel dtm = (DefaultTableModel) cartTable.getModel();
+            if (cartTable.getRowCount() != 0){
         for(int i=0;i<cartTable.getRowCount();i++){
             try{
             Connection con=dao.ConnectionProvider.main();
             Statement st=con.createStatement();
-            st.executeUpdate("update medicine set quantity=quantity-"+ Integer.parseInt(dtm.getValueAt(i,4).toString()) + " where uniqueId="+Integer.parseInt(dtm.getValueAt(i,0).tostring()));
+            st.executeUpdate("update medicine set quantity=quantity-"+Integer.parseInt(dtm.getValueAt(i,4).toString()) + " where uniqueId="+Integer.parseInt(dtm.getValueAt(i,0).toString()));
             }
                 catch(Exception e){
                     JOptionPane.showMessageDialog(null, e);
-                        }
+           }
+        }
         }
         try {
           SimpleDateFormat myFormat = new SimpleDateFormat("dd-MM-YYYY");
@@ -441,7 +474,7 @@ public class SellMedicine extends javax.swing.JFrame {
           PreparedStatement ps = con.prepareStatement("insert into bill (billId,billDate,totalPaid,genratedBy) values(?,?,?,?)");
           ps.setString(1, billId);
           ps.setString(2, myFormat.format(cal.getTime()));
-          ps.setString(3, finalTotalPrice);
+          ps.setInt(3, finalTotalPrice);
           ps.setString(4, username);
           ps.executeUpdate();
           
@@ -462,12 +495,12 @@ public class SellMedicine extends javax.swing.JFrame {
         doc.add(details);
         doc.add(starLine);
         PdfPTable tb1 = new PdfPTable(6);
-        tbl.addCell("Medicine Id");
-        tbl.addCell("Name");
-        tbl.addCell("Company Name ");
-        tbl.addCell("PricePerUnit");
-        tbl.addCell("No of Units");
-        tbl.addCell("Sub Total Price");
+        tb1.addCell("Medicine Id");
+        tb1.addCell("Name");
+        tb1.addCell("Company Name ");
+        tb1.addCell("PricePerUnit");
+        tb1.addCell("No of Units");
+        tb1.addCell("Sub Total Price");
            for (int i=0;i<cartTable.getRowCount();i++){
          String a = cartTable.getValueAt(i, 0).toString();
          String b = cartTable.getValueAt(i, 1).toString();
@@ -475,15 +508,15 @@ public class SellMedicine extends javax.swing.JFrame {
          String d = cartTable.getValueAt(i, 3).toString();
          String e = cartTable.getValueAt(i, 4).toString();
          String f = cartTable.getValueAt(i, 5).toString();
-         tbl.addCell(a);
-         tbl.addCell(b);
-         tbl.addCell(c);
-         tbl.addCell(d);
-         tbl.addCell(e);
-         tbl.addCell(f);
+         tb1.addCell(a);
+         tb1.addCell(b);
+         tb1.addCell(c);
+         tb1.addCell(d);
+         tb1.addCell(e);
+         tb1.addCell(f);
         }
-        doc.add(tbl);
-        doc.add(starline);
+        doc.add(tb1);
+        doc.add(starLine);
         Paragraph thanksMsg = new Paragraph ("ThankYou, Please Visit Again.");
         doc.add(thanksMsg);
         OpenPdf.openById(String.valueOf(billId));

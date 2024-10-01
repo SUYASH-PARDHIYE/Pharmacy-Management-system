@@ -205,22 +205,24 @@ public class UpdateMedicine extends javax.swing.JFrame {
         // TODO add your handling code here:
         String uniqueId = txtMedicineId.getText();
         String name = txtName.getText();
-        String comapanyName = txtCompanyname.getText();
+        String companyName = txtCompanyname.getText();
         String quantity = txtQuantity.getText();
         String price = txtPricePerUnit.getText();
         String addQuantity = txtAddQuantity.getText();
         
         int totalQuantity = 0;
         if (addQuantity.equals("")){
-        totalQuanity = Integer.parseInt(quantity) + Integer.parseInt(addQuantity);
+        totalQuantity = Integer.parseInt(quantity) ;
         
-        }
+        }else {
+        totalQuantity = Integer.parseInt(quantity) + + Integer.parseInt(addQuantity);  
+       }
         if (uniqueId.equals("")){
         JOptionPane.showMessageDialog(null, "Medicine Id Field is required.");
         }else if(name.equals("")){
          JOptionPane.showMessageDialog(null, "Name Field is required.");
         }else if(companyName.equals("")){
-        JOptionPane.showMessageDialog(null, "Comapany Name Field is required.");
+        JOptionPane.showMessageDialog(null, "Company Name Field is required.");
         }else if(!addQuantity.matches(numberPattern)){
         JOptionPane.showMessageDialog(null, "Add Quantity Field is invalid.");
         }else if(price.equals("")){
@@ -233,25 +235,18 @@ public class UpdateMedicine extends javax.swing.JFrame {
           PreparedStatement ps = con.prepareStatement("update medicine set name=?,companyName=?,quantity=?,price=? where uniqueId=?");
           ps.setString(1, name);
           ps.setString(2, companyName);
-          ps.setString(3, totalQuantity);
+          ps.setInt(3, totalQuantity);
           ps.setString(4, price);
-          ps.setString(5, Integer.parseInt(uniqueId));
+          ps.setInt(5, Integer.parseInt(uniqueId));
           ps.executeUpdate();
           JOptionPane.showMessageDialog(null, "Medicine Updated Successfully ");
-          
-
-
-          
-           // Statement st=con.createStatement();
-           // ResultSet rs=st.executeQuery("select *from medicine where uniqueId like '"+uniqueId+"%'");
-            while(rs.next())
+          new UpdateMedicine().setVisible(true);
           }
         catch(Exception e){
                     JOptionPane.showMessageDialog(null, e);
                         }
 }
-        
-}          
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed

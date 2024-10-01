@@ -16,7 +16,8 @@ public class ConnectionProvider {
     public static Connection main() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/pharmacy?useSSL=false","root","root");
+          //  Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL");
+          Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/pharmacy","root","root");
            System.out.println(con);
             return con;
         }
